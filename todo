@@ -14,6 +14,11 @@ case "${1}" in
     find "${basedir}" -maxdepth 1 -type f | wc -l
     ;;
 
+  list)
+    basedir_exists || { exit 0; }
+    find "${basedir}" -maxdepth 1 -type f | sort -n | xargs cat
+    ;;
+
   *)
     mkdir -p "${basedir}"
     echo "$@" > "${basedir}/`date +%s`"
