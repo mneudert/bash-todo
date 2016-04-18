@@ -16,9 +16,19 @@ case "${1}" in
 
   list)
     basedir_exists || { exit 0; }
-    for todo in $(find "${basedir}" -maxdepth 1 -type f | sort -n); do
-        echo -n "$(date -d @$(basename ${todo}) +"%F %T"): "
-        cat "${todo}"
+
+    todos=( $(find "${basedir}" -maxdepth 1 -type f | sort -n) )
+
+    todo_num=${#todos[@]}
+    pad_len="${#todo_num}"
+    pad_str="            "
+
+    for i in "${!todos[@]}"; do
+        n=$((1 + $i))
+
+        echo -n "${pad_str:0:$(($pad_len - ${#n}))}${n} | "
+        echo -n "$(date -d @$(basename ${todos[$i]}) +"%F %T"): "
+        cat "${todos[$i]}"
     done
     ;;
 
