@@ -8,7 +8,7 @@ basedir_exists() {
 
 [ ! -z "$1" ] || exit 0
 
-case "${1}" in
+case "${1}${2}" in
   count)
     basedir_exists || { echo 0; exit 0; }
     find "${basedir}" -maxdepth 1 -type f | wc -l
