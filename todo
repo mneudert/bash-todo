@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+TODO_DATE="${TODO_DATE:-%F %T}"
 TODO_ROOT="${TODO_ROOT:-$HOME/.todo}"
 
 basedir="${TODO_ROOT}$(pwd)"
@@ -29,7 +30,7 @@ case "${1}${2}" in
         n=$((1 + $i))
 
         echo -n "${pad_str:0:$(($pad_len - ${#n}))}${n} | "
-        echo -n "$(date -d @$(basename ${todos[$i]}) +"%F %T"): "
+        echo -n "$(date -d @$(basename ${todos[$i]}) +"${TODO_DATE}"): "
         cat "${todos[$i]}"
     done
     ;;
