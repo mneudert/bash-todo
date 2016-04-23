@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-basedir="$HOME/.todo$(pwd)"
+TODO_ROOT="${TODO_ROOT:-$HOME/.todo}"
+
+basedir="${TODO_ROOT}$(pwd)"
 
 basedir_exists() {
   return $([[ -d "${basedir}" ]])
