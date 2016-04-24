@@ -41,6 +41,15 @@ case "${1}${2}" in
     done
     ;;
 
+  rm[0-9]*)
+    basedir_exists || { exit 0; }
+
+    todos=( $(find "${basedir}" -maxdepth 1 -type f | sort -n) )
+    todo=${todos[$((1 + $2))]}
+
+    [ -f "${todo}" ] && rm "${todo}"
+    ;;
+
   *)
     mkdir -p "${basedir}"
     echo "$@" > "${basedir}/`date +%s`"
