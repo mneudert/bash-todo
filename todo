@@ -12,6 +12,12 @@ basedir_exists() {
 [ ! -z "$1" ] || exit 0
 
 case "${1}${2}" in
+  clear)
+    basedir_exists || { exit 0; }
+
+    find "${basedir}" -maxdepth 1 -type f -exec rm {} \;
+    ;;
+
   count)
     basedir_exists || { echo 0; exit 0; }
     find "${basedir}" -maxdepth 1 -type f | wc -l
