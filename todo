@@ -9,9 +9,20 @@ basedir_exists() {
   return $([[ -d "${basedir}" ]])
 }
 
-[ ! -z "$1" ] || exit 0
-
 case "${1}${2}" in
+  '') ;&
+  help)
+    echo 'Usage: todo <command>'
+    echo ''
+    echo 'All commands are using the current working directory.'
+    echo ''
+    echo 'Commands:'
+    echo '   clear       Clears all todos'
+    echo '   count       Returns count of todos'
+    echo '   list        Lists all todos'
+    echo '   rm [0-9]*   Deletes a single todo (with index displayed in list)'
+    ;;
+
   clear)
     basedir_exists || { exit 0; }
 
