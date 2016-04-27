@@ -1,0 +1,11 @@
+before_install:
+  - mkdir -p "${HOME}/bin"
+  - export PATH="${HOME}/bin:${TRAVIS_BUILD_DIR}:${PATH}"
+
+  - wget 'https://github.com/sstephenson/bats/archive/v0.4.0.tar.gz' -O bats.tar.gz && tar -xf bats.tar.gz
+  - find . -maxdepth 1 -type d -name 'bats*' -exec mv {} bats \;
+  - cd bats
+  - ./install.sh "${HOME}"
+  - cd "${TRAVIS_BUILD_DIR}"
+
+script: bats --tap todo.bats
