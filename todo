@@ -20,6 +20,7 @@ case "${1}${2}" in
     echo '   clear       Clears all todos'
     echo '   count       Returns count of todos'
     echo '   list        Lists all todos'
+    echo '   list raw    Lists all todos in raw format (unsorted, no index, no date)'
     echo '   rm [0-9]*   Deletes a single todo (with index displayed in list)'
     ;;
 
@@ -50,6 +51,12 @@ case "${1}${2}" in
         echo -n "$(date -d @$(basename ${todos[$i]}) +"${TODO_DATE}"): "
         cat "${todos[$i]}"
     done
+    ;;
+
+  listraw)
+    basedir_exists || { exit 0; }
+
+    find "${basedir}" -maxdepth 1 -type f -exec cat {} \;
     ;;
 
   rm[0-9]*)

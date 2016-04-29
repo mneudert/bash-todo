@@ -19,6 +19,9 @@ todo count
 # list todos
 todo list
 
+# list todos without additional information (useful for sorting/processing)
+todo list raw
+
 # delete single todo
 todo rm [0-9]*
 
