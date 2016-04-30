@@ -63,7 +63,7 @@ case "${1}${2}" in
     basedir_exists || { exit 0; }
 
     todos=( $(find "${basedir}" -maxdepth 1 -type f | sort -n) )
-    todo=${todos[$((1 - $2))]}
+    todo=${todos[$(($2 - 1))]}
 
     [ -f "${todo}" ] && rm "${todo}"
     ;;

@@ -37,3 +37,26 @@ teardown() {
   [ "$status" -eq 0 ]
   [ "${#lines[@]}" = "0" ]
 }
+
+
+@test "removal of a single todo" {
+  run todo first
+  run sleep 1
+  run todo second
+  run sleep 1
+  run todo third
+
+  echo $TODO_ROOT
+  run todo list
+
+  [ "$status" -eq 0 ]
+  [ "${#lines[@]}" = "3" ]
+
+  run todo rm 2
+  run todo list
+
+  echo $output
+  [ "$status" -eq 0 ]
+  [[ "${lines[0]}" == *"first" ]]
+  [[ "${lines[1]}" == *"third" ]]
+}
