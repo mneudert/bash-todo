@@ -1,5 +1,14 @@
 #!/usr/bin/env bats
 
+setup() {
+  export TODO_ROOT=$(mktemp --directory --tmpdir bash-todo_XXXXXXXX)
+}
+
+teardown() {
+  rm -rf "${TODO_ROOT}"
+}
+
+
 @test "no parameters displays help" {
   run todo
 
