@@ -39,6 +39,15 @@ teardown() {
 }
 
 
+@test "raw listing" {
+  run todo foo
+  run todo list --raw
+
+  [ "${status}" -eq 0 ]
+  [ "${output}" = "foo" ]
+}
+
+
 @test "removal of a single todo" {
   run todo first
   run sleep 1

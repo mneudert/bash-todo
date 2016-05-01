@@ -17,11 +17,11 @@ case "${1}${2}" in
     echo 'All commands are using the current working directory.'
     echo ''
     echo 'Commands:'
-    echo '   clear       Clears all todos'
-    echo '   count       Returns count of todos'
-    echo '   list        Lists all todos'
-    echo '   list raw    Lists all todos in raw format (unsorted, no index, no date)'
-    echo '   rm [0-9]*   Deletes a single todo (with index displayed in list)'
+    echo '   clear        Clears all todos'
+    echo '   count        Returns count of todos'
+    echo '   list         Lists all todos'
+    echo '   list --raw   Lists all todos in raw format (unsorted, no index, no date)'
+    echo '   rm [0-9]*    Deletes a single todo (with index displayed in list)'
     ;;
 
   clear)
@@ -53,7 +53,7 @@ case "${1}${2}" in
     done
     ;;
 
-  listraw)
+  list--raw)
     basedir_exists || { exit 0; }
 
     find "${basedir}" -maxdepth 1 -type f -exec cat {} \;
