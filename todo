@@ -9,6 +9,21 @@ basedir_exists() {
   return $([[ -d "${basedir}" ]])
 }
 
+
+#######################################
+# Returns the todos for the current working directory.
+#
+# Returns:
+#     Array
+#######################################
+find_todos() {
+    find "${basedir}" -maxdepth 1 -type f
+}
+
+
+#######################################
+# Application
+#######################################
 case "${1}${2}" in
   '') ;&
   help)
@@ -26,19 +41,18 @@ case "${1}${2}" in
 
   clear)
     basedir_exists || { exit 0; }
-
-    find "${basedir}" -maxdepth 1 -type f -exec rm {} \;
+    find_todos | xargs rm
     ;;
 
   count)
     basedir_exists || { echo 0; exit 0; }
-    find "${basedir}" -maxdepth 1 -type f | wc -l
+    find_todos | wc -l
     ;;
 
   list)
     basedir_exists || { exit 0; }
 
-    todos=( $(find "${basedir}" -maxdepth 1 -type f | sort -n) )
+    todos=($( find_todos | sort -n ))
 
     todo_num=${#todos[@]}
     pad_len="${#todo_num}"
@@ -56,13 +70,13 @@ case "${1}${2}" in
   list--raw)
     basedir_exists || { exit 0; }
 
-    find "${basedir}" -maxdepth 1 -type f -exec cat {} \;
+    find_todos | xargs cat
     ;;
 
   rm[0-9]*)
     basedir_exists || { exit 0; }
 
-    todos=( $(find "${basedir}" -maxdepth 1 -type f | sort -n) )
+    todos=($( find_todos | sort -n ))
     todo=${todos[$(($2 - 1))]}
 
     [ -f "${todo}" ] && rm "${todo}"
