@@ -41,10 +41,12 @@ teardown() {
 
 @test "raw listing" {
   run todo foo
+  run sleep 1
+  run todo bar
   run todo list --raw
 
   [ "${status}" -eq 0 ]
-  [ "${output}" = "foo" ]
+  [ "${lines[0]}" = "foo" ]
 }
 
 

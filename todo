@@ -69,8 +69,7 @@ case "${1}${2}" in
 
   list--raw)
     basedir_exists || { exit 0; }
-
-    find_todos | xargs cat
+    find_todos | sort -n | xargs cat
     ;;
 
   rm[0-9]*)
