@@ -1,11 +1,17 @@
 #!/usr/bin/env bats
 
+export PATH="$(pwd):${PATH}"
+
 setup() {
   export TODO_ROOT=$(mktemp --directory --tmpdir bash-todo_XXXXXXXX)
+  export TODO_BASE=$(mktemp --directory --tmpdir bash-todo_XXXXXXXX)
+
+  cd $TODO_BASE
 }
 
 teardown() {
   rm -rf "${TODO_ROOT}"
+  rm -rf "${TODO_BASE}"
 }
 
 
