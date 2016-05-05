@@ -22,6 +22,9 @@ todo list
 # list todos without additional information (useful for sorting/processing)
 todo list --raw
 
+# lists todo files recursively without sort-/cat-ing
+todo list --recursive
+
 # delete single todo
 todo rm [0-9]*
 

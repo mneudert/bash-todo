@@ -56,6 +56,23 @@ teardown() {
 }
 
 
+@test "recursive listing" {
+  run todo foo
+
+  mkdir subtest
+  cd subtest
+
+  run todo bar
+
+  cd ..
+
+  run todo list --recursive
+
+  [ "${status}" -eq 0 ]
+  [ "${#lines[@]}" = "2" ]
+}
+
+
 @test "removal of a single todo" {
   run todo first
   run sleep 1

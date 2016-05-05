@@ -17,7 +17,11 @@ basedir_exists() {
 #     Array
 #######################################
 find_todos() {
-    find "${basedir}" -maxdepth 1 -type f
+    local maxdepth=""
+
+    [ ! -z "${1}" ] && maxdepth="-maxdepth ${1}"
+
+    find "${basedir}" ${maxdepth} -type f
 }
 
 
@@ -41,18 +45,18 @@ case "${1}${2}" in
 
   clear)
     basedir_exists || { exit 0; }
-    find_todos | xargs rm
+    find_todos 1 | xargs rm
     ;;
 
   count)
     basedir_exists || { echo 0; exit 0; }
-    find_todos | wc -l
+    find_todos 1 | wc -l
     ;;
 
   list)
     basedir_exists || { exit 0; }
 
-    todos=($( find_todos | sort -n ))
+    todos=($( find_todos 1 | sort -n ))
 
     todo_num=${#todos[@]}
     pad_len="${#todo_num}"
@@ -69,7 +73,12 @@ case "${1}${2}" in
 
   list--raw)
     basedir_exists || { exit 0; }
-    find_todos | sort -n | xargs cat
+    find_todos 1 | sort -n | xargs cat
+    ;;
+
+  list--recursive)
+    basedir_exists || { exit 0; }
+    find_todos
     ;;
 
   rm[0-9]*)
