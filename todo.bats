@@ -56,6 +56,24 @@ teardown() {
 }
 
 
+@test "recursive listing" {
+  run todo foo
+
+  mkdir subtest
+  cd subtest
+
+  run todo bar
+
+  cd ..
+
+  run todo list --recursive
+
+  [ "${status}" -eq 0 ]
+  [[ "${lines[1]}" == *"foo" ]]
+  [[ "${lines[3]}" == *"bar" ]]
+}
+
+
 @test "recursive listing (raw)" {
   run todo foo
 
