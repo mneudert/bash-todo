@@ -78,7 +78,12 @@ case "${1}${2}" in
 
   list--recursive)
     basedir_exists || { exit 0; }
-    find_todos
+
+    case "${3}" in
+        "--raw")
+            find_todos
+            ;;
+    esac
     ;;
 
   rm[0-9]*)

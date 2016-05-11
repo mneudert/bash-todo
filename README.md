@@ -23,7 +23,7 @@ todo list
 todo list --raw
 
 # lists todo files recursively without sort-/cat-ing
-todo list --recursive
+todo list --recursive --raw
 
 # delete single todo
 todo rm [0-9]*
