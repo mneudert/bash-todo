@@ -36,11 +36,14 @@ case "${1}${2}" in
     echo 'All commands are using the current working directory.'
     echo ''
     echo 'Commands:'
-    echo '   clear        Clears all todos'
-    echo '   count        Returns count of todos'
-    echo '   list         Lists all todos'
-    echo '   list --raw   Lists all todos in raw format (unsorted, no index, no date)'
-    echo '   rm [0-9]*    Deletes a single todo (with index displayed in list)'
+    echo '   clear              Clears all todos'
+    echo '   count              Returns count of todos'
+    echo '   list               Lists all todos'
+    echo '   list --raw         Lists all todos in raw format (unsorted, filename only)'
+    echo '   list --recursive   Lists all todos recursively'
+    echo '   rm [0-9]*          Deletes a single todo (with index displayed in list)'
+    echo ''
+    echo 'To recursively list only filenames you can use "list --recursive --raw"'
     ;;
 
   clear)
