@@ -21,7 +21,7 @@ find_todos() {
 
     [ ! -z "${1}" ] && maxdepth="-maxdepth ${1}"
 
-    find "${basedir}" ${maxdepth} -type f
+    find "${basedir}" ${maxdepth} -type f -print0
 }
 
 
@@ -48,20 +48,21 @@ case "${1}${2}" in
 
   clear)
     basedir_exists || { exit 0; }
-    find_todos 1 | xargs rm
+    find_todos 1 | xargs -0 rm
     ;;
 
   count)
     basedir_exists || { echo 0; exit 0; }
-    find_todos 1 | wc -l
+    find_todos 1 | tr "\0" "\n" | wc -l
     ;;
 
   list)
     basedir_exists || { exit 0; }
 
-    todos=($( find_todos 1 | sort -n ))
+    while IFS= read -r -d '' todo; do
+       todos[todo_num++]="${todo}"
+    done < <( find_todos 1 | sort -z -n )
 
-    todo_num=${#todos[@]}
     pad_len="${#todo_num}"
     pad_str="            "
 
@@ -69,14 +70,14 @@ case "${1}${2}" in
         n=$((1 + $i))
 
         echo -n "${pad_str:0:$(($pad_len - ${#n}))}${n} | "
-        echo -n "$(date -d @$(basename ${todos[$i]}) +"${TODO_DATE}"): "
+        echo -n "$(date -d @$( basename "${todos[$i]}" ) +"${TODO_DATE}"): "
         cat "${todos[$i]}"
     done
     ;;
 
   list--raw)
     basedir_exists || { exit 0; }
-    find_todos 1 | sort -n | xargs cat
+    find_todos 1 | sort -z -n | xargs -0 cat
     ;;
 
   list--recursive)
@@ -90,6 +91,10 @@ case "${1}${2}" in
       "")
         cur_dir=""
 
+        while IFS= read -r -d '' todo; do
+           todos[todo_num++]="${todo}"
+        done < <( find_todos | sort -z -n )
+
         for todo in "${todos[@]}"; do
             todo_dir=$( dirname "${todo#$TODO_ROOT}" )
 
@@ -100,7 +105,7 @@ case "${1}${2}" in
                 cur_dir=${todo_dir}
             fi
 
-            echo -n "  $(date -d @$(basename ${todo}) +"${TODO_DATE}"): "
+            echo -n "  $(date -d @$( basename "${todo}" ) +"${TODO_DATE}"): "
             cat "${todo}"
         done
         ;;
@@ -110,7 +115,10 @@ case "${1}${2}" in
   rm[0-9]*)
     basedir_exists || { exit 0; }
 
-    todos=($( find_todos | sort -n ))
+    while IFS= read -r -d '' todo; do
+       todos[todo_num++]="${todo}"
+    done < <( find_todos 1 | sort -z -n )
+
     todo=${todos[$(($2 - 1))]}
 
     [ -f "${todo}" ] && rm "${todo}"

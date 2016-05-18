@@ -110,3 +110,24 @@ teardown() {
   [[ "${lines[0]}" == *"first" ]]
   [[ "${lines[1]}" == *"third" ]]
 }
+
+
+@test "handling of directories with spaces" {
+  mkdir "subtest with space"
+  cd "subtest with space"
+
+  todo working
+
+  run todo count
+
+  [ "${status}" -eq 0 ]
+  [ "${lines[0]}" = "1" ]
+
+  cd ..
+
+  run todo list --recursive
+
+  [ "${status}" -eq 0 ]
+  [[ "${lines[0]}" == *"subtest with space"* ]]
+  [[ "${lines[1]}" == *"working" ]]
+}
