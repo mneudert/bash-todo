@@ -21,7 +21,7 @@ find_todos() {
 
     [ ! -z "${1}" ] && maxdepth="-maxdepth ${1}"
 
-    find "${basedir}" ${maxdepth} -type f -print0
+    find "${basedir}" ${maxdepth} -type f -print0 | sort -z -n
 }
 
 
@@ -39,7 +39,7 @@ case "${1}${2}" in
     echo '   clear              Clears all todos'
     echo '   count              Returns count of todos'
     echo '   list               Lists all todos'
-    echo '   list --raw         Lists all todos in raw format (unsorted, filename only)'
+    echo '   list --raw         Lists all todos in raw format (filename only)'
     echo '   list --recursive   Lists all todos recursively'
     echo '   rm [0-9]*          Deletes a single todo (with index displayed in list)'
     echo ''
@@ -61,7 +61,7 @@ case "${1}${2}" in
 
     while IFS= read -r -d '' todo; do
        todos[todo_num++]="${todo}"
-    done < <( find_todos 1 | sort -z -n )
+    done < <( find_todos 1 )
 
     pad_len="${#todo_num}"
     pad_str="            "
@@ -77,7 +77,7 @@ case "${1}${2}" in
 
   list--raw)
     basedir_exists || { exit 0; }
-    find_todos 1 | sort -z -n | xargs -0 cat
+    find_todos 1 | xargs -0 cat
     ;;
 
   list--recursive)
@@ -93,7 +93,7 @@ case "${1}${2}" in
 
         while IFS= read -r -d '' todo; do
            todos[todo_num++]="${todo}"
-        done < <( find_todos | sort -z -n )
+        done < <( find_todos )
 
         for todo in "${todos[@]}"; do
             todo_dir=$( dirname "${todo#$TODO_ROOT}" )
@@ -117,7 +117,7 @@ case "${1}${2}" in
 
     while IFS= read -r -d '' todo; do
        todos[todo_num++]="${todo}"
-    done < <( find_todos 1 | sort -z -n )
+    done < <( find_todos 1 )
 
     todo=${todos[$(($2 - 1))]}
 
