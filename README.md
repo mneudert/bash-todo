@@ -16,16 +16,16 @@ todo clear
 # print count of todos
 todo count
 
-# list todos
+# prints todos
 todo list
 
-# list todos without additional information (useful for sorting/processing)
+# lists todo filenames (not contents)
 todo list --raw
 
-# list todos recursively
+# prints todos recursively
 todo list --recursive
 
-# lists todo files recursively without sort-/cat-ing
+# lists todo filenames recursively (not contents)
 todo list --recursive --raw
 
 # delete single todo

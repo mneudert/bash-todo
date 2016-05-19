@@ -52,7 +52,8 @@ teardown() {
   run todo list --raw
 
   [ "${status}" -eq 0 ]
-  [ "${lines[0]}" = "foo" ]
+  [ "${#lines[@]}" = "2" ]
+  [ "${lines[0]}" != "foo" ]
 }
 
 

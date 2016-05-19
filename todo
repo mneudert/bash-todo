@@ -38,9 +38,9 @@ case "${1}${2}" in
     echo 'Commands:'
     echo '   clear              Clears all todos'
     echo '   count              Returns count of todos'
-    echo '   list               Lists all todos'
+    echo '   list               Prints all todos'
     echo '   list --raw         Lists all todos in raw format (filename only)'
-    echo '   list --recursive   Lists all todos recursively'
+    echo '   list --recursive   Prints all todos recursively'
     echo '   rm [0-9]*          Deletes a single todo (with index displayed in list)'
     echo ''
     echo 'To recursively list only filenames you can use "list --recursive --raw"'
@@ -77,7 +77,7 @@ case "${1}${2}" in
 
   list--raw)
     basedir_exists || { exit 0; }
-    find_todos 1 | xargs -0 cat
+    find_todos 1 | tr "\0" "\n"
     ;;
 
   list--recursive)
