@@ -36,12 +36,13 @@ case "${1}${2}" in
     echo 'All commands are using the current working directory.'
     echo ''
     echo 'Commands:'
-    echo '   clear              Clears all todos'
-    echo '   count              Returns count of todos'
-    echo '   list               Prints all todos'
-    echo '   list --raw         Lists all todos in raw format (filename only)'
-    echo '   list --recursive   Prints all todos recursively'
-    echo '   rm [0-9]*          Deletes a single todo (with index displayed in list)'
+    echo '   clear               Clears all todos'
+    echo '   clear --recursive   Clears all todos recursively'
+    echo '   count               Returns count of todos'
+    echo '   list                Prints all todos'
+    echo '   list --raw          Lists all todos in raw format (filename only)'
+    echo '   list --recursive    Prints all todos recursively'
+    echo '   rm [0-9]*           Deletes a single todo (with index displayed in list)'
     echo ''
     echo 'To recursively list only filenames you can use "list --recursive --raw"'
     ;;
@@ -49,6 +50,11 @@ case "${1}${2}" in
   clear)
     basedir_exists || { exit 0; }
     find_todos 1 | xargs -0 rm
+    ;;
+
+  clear--recursive)
+    basedir_exists || { exit 0; }
+    find_todos | xargs -0 rm
     ;;
 
   count)

@@ -62,6 +62,28 @@ teardown() {
   [ "${lines[0]}" = "0" ]
 }
 
+@test "recursive clearing" {
+  run todo foo
+
+  mkdir subtest
+  cd subtest
+
+  run todo bar
+
+  cd ..
+
+  run todo list --recursive --raw
+
+  [ "${status}" -eq 0 ]
+  [ "${#lines[@]}" = "2" ]
+
+  run todo clear --recursive
+  run todo list --recursive --raw
+
+  [ "${status}" -eq 0 ]
+  [ "${#lines[@]}" = "0" ]
+}
+
 
 @test "raw listing" {
   run todo foo

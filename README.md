@@ -13,6 +13,9 @@ todo help
 # clear todos
 todo clear
 
+# clear todos recursively
+todo clear --recursive
+
 # print count of todos
 todo count
 
