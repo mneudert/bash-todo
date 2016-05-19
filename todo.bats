@@ -45,6 +45,24 @@ teardown() {
 }
 
 
+@test "clearing" {
+  run todo foo
+  run sleep 1
+  run todo bar
+
+  run todo count
+
+  [ "${status}" -eq 0 ]
+  [ "${lines[0]}" = "2" ]
+
+  run todo clear
+  run todo count
+
+  [ "${status}" -eq 0 ]
+  [ "${lines[0]}" = "0" ]
+}
+
+
 @test "raw listing" {
   run todo foo
   run sleep 1
