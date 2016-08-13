@@ -36,6 +36,9 @@ todo rm [0-9]*
 
 # create a new todo
 todo some text where the first 2 parameters to not match any other command
+
+# change an existing entry
+todo modify 4 this is the new message for todo 4
 ```
 
 

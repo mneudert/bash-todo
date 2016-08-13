@@ -42,6 +42,7 @@ case "${1}${2}" in
     echo '   list                Prints all todos'
     echo '   list --raw          Lists all todos in raw format (filename only)'
     echo '   list --recursive    Prints all todos recursively'
+    echo '   modify [0-9]*       Modifies a todo with a replacement message'
     echo '   rm [0-9]*           Deletes a single todo (with index displayed in list)'
     echo ''
     echo 'To recursively list only filenames you can use "list --recursive --raw"'
@@ -116,6 +117,21 @@ case "${1}${2}" in
         done
         ;;
     esac
+    ;;
+
+  modify[0-9]*)
+    basedir_exists || { exit 0; }
+
+    while IFS= read -r -d '' todo; do
+       todos[todo_num++]="${todo}"
+    done < <( find_todos 1 )
+
+    todo=${todos[$(($2 - 1))]}
+
+    if [ -f "${todo}" ]; then
+      shift 2
+      echo "$@" > "${todo}"
+    fi
     ;;
 
   rm[0-9]*)
