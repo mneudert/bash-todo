@@ -1,14 +1,21 @@
 #!/usr/bin/env bash
 
+## Set up global variables
 TODO_DATE="${TODO_DATE:-%F %T}"
 TODO_ROOT="${TODO_ROOT:-$HOME/.todo}"
 
 basedir="${TODO_ROOT}$(pwd)"
 
+
+#######################################
+# Checks if the configures basedir exists.
+#
+# Returns:
+#   Boolean
+#######################################
 basedir_exists() {
   return $([[ -d "${basedir}" ]])
 }
-
 
 #######################################
 # Returns the todos for the current working directory.
