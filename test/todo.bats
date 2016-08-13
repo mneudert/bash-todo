@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-export PATH="$(pwd):${PATH}"
+export PATH="$(dirname "${BATS_TEST_DIRNAME}"):${PATH}"
 
 setup() {
   export TODO_ROOT=$(mktemp --directory --tmpdir bash-todo_XXXXXXXX)

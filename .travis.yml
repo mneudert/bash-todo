@@ -8,4 +8,4 @@ before_install:
   - ./install.sh "${HOME}"
   - cd "${TRAVIS_BUILD_DIR}"
 
-script: bats --tap todo.bats
+script: bats --tap ./test/
