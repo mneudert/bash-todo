@@ -14,7 +14,7 @@ basedir="${TODO_ROOT}$(pwd)"
 #   Boolean
 #######################################
 basedir_exists() {
-  return $([[ -d "${basedir}" ]])
+  [ -d "${basedir}" ]
 }
 
 #######################################
@@ -24,11 +24,11 @@ basedir_exists() {
 #     Array
 #######################################
 find_todos() {
-  local maxdepth=""
-
-  [ ! -z "${1}" ] && maxdepth="-maxdepth ${1}"
-
-  find "${basedir}" ${maxdepth} -type f -print0 | sort -z -n
+  if [ -z "${1}" ]; then
+    find "${basedir}" -type f -print0 | sort -z -n
+  else
+    find "${basedir}" -maxdepth "${1}" -type f -print0 | sort -z -n
+  fi
 }
 
 
@@ -81,10 +81,10 @@ case "${1}${2}" in
     pad_str="            "
 
     for i in "${!todos[@]}"; do
-      n=$((1 + $i))
+      n=$((1 + i))
 
-      echo -n "${pad_str:0:$(($pad_len - ${#n}))}${n} | "
-      echo -n "$(date -d @$( basename "${todos[$i]}" ) +"${TODO_DATE}"): "
+      echo -n "${pad_str:0:$((pad_len - ${#n}))}${n} | "
+      echo -n "$(date -d "@$( basename "${todos[$i]}" )" +"${TODO_DATE}"): "
       cat "${todos[$i]}"
     done
     ;;
@@ -112,14 +112,14 @@ case "${1}${2}" in
         for todo in "${todos[@]}"; do
           todo_dir=$( dirname "${todo#$TODO_ROOT}" )
 
-          if [[ ${todo_dir} != ${cur_dir} ]]; then
+          if [[ "${todo_dir}" != "${cur_dir}" ]]; then
             [ ! -z "${cur_dir}" ] && echo ""
 
             echo "${todo_dir}:"
             cur_dir=${todo_dir}
           fi
 
-          echo -n "  $(date -d @$( basename "${todo}" ) +"${TODO_DATE}"): "
+          echo -n "  $(date -d "@$( basename "${todo}" )" +"${TODO_DATE}"): "
           cat "${todo}"
         done
         ;;
@@ -155,6 +155,6 @@ case "${1}${2}" in
 
   *)
     mkdir -p "${basedir}"
-    echo "$@" > "${basedir}/`date +%s`"
+    echo "$@" > "${basedir}/$(date +%s)"
     ;;
 esac
