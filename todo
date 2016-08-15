@@ -24,11 +24,11 @@ basedir_exists() {
 #     Array
 #######################################
 find_todos() {
-    local maxdepth=""
+  local maxdepth=""
 
-    [ ! -z "${1}" ] && maxdepth="-maxdepth ${1}"
+  [ ! -z "${1}" ] && maxdepth="-maxdepth ${1}"
 
-    find "${basedir}" ${maxdepth} -type f -print0 | sort -z -n
+  find "${basedir}" ${maxdepth} -type f -print0 | sort -z -n
 }
 
 
@@ -74,18 +74,18 @@ case "${1}${2}" in
     basedir_exists || { exit 0; }
 
     while IFS= read -r -d '' todo; do
-       todos[todo_num++]="${todo}"
+      todos[todo_num++]="${todo}"
     done < <( find_todos 1 )
 
     pad_len="${#todo_num}"
     pad_str="            "
 
     for i in "${!todos[@]}"; do
-        n=$((1 + $i))
+      n=$((1 + $i))
 
-        echo -n "${pad_str:0:$(($pad_len - ${#n}))}${n} | "
-        echo -n "$(date -d @$( basename "${todos[$i]}" ) +"${TODO_DATE}"): "
-        cat "${todos[$i]}"
+      echo -n "${pad_str:0:$(($pad_len - ${#n}))}${n} | "
+      echo -n "$(date -d @$( basename "${todos[$i]}" ) +"${TODO_DATE}"): "
+      cat "${todos[$i]}"
     done
     ;;
 
@@ -110,17 +110,17 @@ case "${1}${2}" in
         done < <( find_todos )
 
         for todo in "${todos[@]}"; do
-            todo_dir=$( dirname "${todo#$TODO_ROOT}" )
+          todo_dir=$( dirname "${todo#$TODO_ROOT}" )
 
-            if [[ ${todo_dir} != ${cur_dir} ]]; then
-                [ ! -z "${cur_dir}" ] && echo ""
+          if [[ ${todo_dir} != ${cur_dir} ]]; then
+            [ ! -z "${cur_dir}" ] && echo ""
 
-                echo "${todo_dir}:"
-                cur_dir=${todo_dir}
-            fi
+            echo "${todo_dir}:"
+            cur_dir=${todo_dir}
+          fi
 
-            echo -n "  $(date -d @$( basename "${todo}" ) +"${TODO_DATE}"): "
-            cat "${todo}"
+          echo -n "  $(date -d @$( basename "${todo}" ) +"${TODO_DATE}"): "
+          cat "${todo}"
         done
         ;;
     esac
@@ -130,7 +130,7 @@ case "${1}${2}" in
     basedir_exists || { exit 0; }
 
     while IFS= read -r -d '' todo; do
-       todos[todo_num++]="${todo}"
+     todos[todo_num++]="${todo}"
     done < <( find_todos 1 )
 
     todo=${todos[$(($2 - 1))]}
@@ -145,7 +145,7 @@ case "${1}${2}" in
     basedir_exists || { exit 0; }
 
     while IFS= read -r -d '' todo; do
-       todos[todo_num++]="${todo}"
+     todos[todo_num++]="${todo}"
     done < <( find_todos 1 )
 
     todo=${todos[$(($2 - 1))]}
