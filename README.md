@@ -60,3 +60,8 @@ precmd() {
 
 PROMPT='[%n@%m:%c]${PR_TODOS}%# '
 ```
+
+__Note:__ If you are displaying the return code of the last executed command
+in your prompt (like 'PR_STAT="$?"') be sure to grab that code __before__
+getting the number of todos. Otherwise the return code displayed would be the
+one from the `todo count` call.
