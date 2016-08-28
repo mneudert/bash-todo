@@ -39,6 +39,9 @@ todo some text where the first 2 parameters to not match any other command
 
 # change an existing entry
 todo modify 4 this is the new message for todo 4
+
+# swap two entries (only contents)
+todo swap 5 2
 ```
 
 
