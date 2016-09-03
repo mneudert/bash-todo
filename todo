@@ -6,6 +6,8 @@ TODO_ROOT="${TODO_ROOT:-$HOME/.todo}"
 
 basedir="${TODO_ROOT}$(pwd)"
 
+action=''
+
 
 #######################################
 # Checks if the configures basedir exists.
@@ -15,6 +17,54 @@ basedir="${TODO_ROOT}$(pwd)"
 #######################################
 basedir_exists() {
   [ -d "${basedir}" ]
+}
+
+#######################################
+# Determins which action to run.
+#
+# Arguments:
+#  $@  Arguments as given to the script
+#######################################
+determine_action() {
+  [[ '' == "${1}" ]] && {
+    action='help'
+    return
+  }
+
+  [[ 'help' == "${1}" && '' == "${2}" ]] && {
+    action='help'
+  }
+}
+
+#######################################
+# Displays application help/usage.
+#######################################
+display_help() {
+  echo 'Usage: todo <command>'
+  echo ''
+  echo 'All commands are using the current working directory.'
+  echo ''
+  echo 'Commands:'
+  echo '   clear                Clears all todos'
+  echo '   clear --recursive    Clears all todos recursively'
+  echo '   count                Returns count of todos'
+  echo '   list                 Prints all todos'
+  echo '   list --raw           Lists all todos in raw format (filename only)'
+  echo '   list --recursive     Prints all todos recursively'
+  echo '   modify [0-9]*        Modifies a todo with a replacement message'
+  echo '   rm [0-9]*            Deletes a single todo (with index displayed in list)'
+  echo '   swap [0-9]* [0-9]*   Swaps contents of todo entries'
+  echo ''
+  echo 'To recursively list only filenames you can use "list --recursive --raw"'
+}
+
+#######################################
+# Executes the previously detected action.
+#######################################
+execute_action() {
+  case "${action}" in
+    help) display_help; exit 0;;
+  esac
 }
 
 #######################################
@@ -35,27 +85,10 @@ find_todos() {
 #######################################
 # Application
 #######################################
-case "${1}${2}" in
-  '') ;&
-  help)
-    echo 'Usage: todo <command>'
-    echo ''
-    echo 'All commands are using the current working directory.'
-    echo ''
-    echo 'Commands:'
-    echo '   clear                Clears all todos'
-    echo '   clear --recursive    Clears all todos recursively'
-    echo '   count                Returns count of todos'
-    echo '   list                 Prints all todos'
-    echo '   list --raw           Lists all todos in raw format (filename only)'
-    echo '   list --recursive     Prints all todos recursively'
-    echo '   modify [0-9]*        Modifies a todo with a replacement message'
-    echo '   rm [0-9]*            Deletes a single todo (with index displayed in list)'
-    echo '   swap [0-9]* [0-9]*   Swaps contents of todo entries'
-    echo ''
-    echo 'To recursively list only filenames you can use "list --recursive --raw"'
-    ;;
+determine_action "$@"
+execute_action
 
+case "${1}${2}" in
   clear)
     basedir_exists || { exit 0; }
     find_todos 1 | xargs -0 rm
