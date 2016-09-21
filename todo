@@ -140,7 +140,7 @@ case "${1}${2}" in
         cur_dir=""
 
         while IFS= read -r -d '' todo; do
-           todos[todo_num++]="${todo}"
+          todos[todo_num++]="${todo}"
         done < <( find_todos )
 
         for todo in "${todos[@]}"; do
@@ -164,7 +164,7 @@ case "${1}${2}" in
     basedir_exists || { exit 0; }
 
     while IFS= read -r -d '' todo; do
-     todos[todo_num++]="${todo}"
+      todos[todo_num++]="${todo}"
     done < <( find_todos 1 )
 
     todo=${todos[$(($2 - 1))]}
@@ -179,7 +179,7 @@ case "${1}${2}" in
     basedir_exists || { exit 0; }
 
     while IFS= read -r -d '' todo; do
-     todos[todo_num++]="${todo}"
+      todos[todo_num++]="${todo}"
     done < <( find_todos 1 )
 
     todo=${todos[$(($2 - 1))]}
@@ -191,7 +191,7 @@ case "${1}${2}" in
     basedir_exists || { exit 0; }
 
     while IFS= read -r -d '' todo; do
-     todos[todo_num++]="${todo}"
+      todos[todo_num++]="${todo}"
     done < <( find_todos 1 )
 
     left=${todos[$(($2 - 1))]}
