@@ -22,6 +22,10 @@ todo count
 # prints todos
 todo list
 
+# lists orphaned todos (respective directory missing)
+# implicitly recursive below current working directory
+tood list --orphaned
+
 # lists todo filenames (not contents)
 todo list --raw
 

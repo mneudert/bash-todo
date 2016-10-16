@@ -49,6 +49,7 @@ display_help() {
   echo '   clear --recursive    Clears all todos recursively'
   echo '   count                Returns count of todos'
   echo '   list                 Prints all todos'
+  echo '   list --orphaned      Recursively prints orphaned todos'
   echo '   list --raw           Lists all todos in raw format (filename only)'
   echo '   list --recursive     Prints all todos recursively'
   echo '   modify [0-9]*        Modifies a todo with a replacement message'
@@ -120,6 +121,32 @@ case "${1}${2}" in
       echo -n "${pad_str:0:$((pad_len - ${#n}))}${n} | "
       echo -n "$(date -d "@$( basename "${todos[$i]}" )" +"${TODO_DATE}"): "
       cat "${todos[$i]}"
+    done
+    ;;
+
+  list--orphaned)
+    basedir_exists || { exit 0; }
+
+    cur_dir=""
+
+    while IFS= read -r -d '' todo; do
+      todos[todo_num++]="${todo}"
+    done < <( find_todos )
+
+    for todo in "${todos[@]}"; do
+      todo_dir=$( dirname "${todo#$TODO_ROOT}" )
+
+      [ -d "${todo_dir}" ] && continue
+
+      if [[ "${todo_dir}" != "${cur_dir}" ]]; then
+        [ ! -z "${cur_dir}" ] && echo ""
+
+        echo "${todo_dir}:"
+        cur_dir=${todo_dir}
+      fi
+
+      echo -n "  orphaned | $(date -d "@$( basename "${todo}" )" +"${TODO_DATE}"): "
+      cat "${todo}"
     done
     ;;
 

@@ -15,6 +15,24 @@ teardown() {
 }
 
 
+@test "orphaned listing" {
+  orphan_dir="test-orphaned-listing"
+  orphan_todo="should be listed"
+
+  mkdir "${orphan_dir}"
+  cd "${orphan_dir}"
+  todo "${orphan_todo}"
+  cd ..
+  rm -rf "${orphan_dir}"
+
+  run todo list --orphaned
+
+  [ "${status}" -eq 0 ]
+  [[ "${lines[0]}" == *"${orphan_dir}"* ]]
+  [[ "${lines[1]}" == *"orphaned"*"${orphan_todo}"* ]]
+}
+
+
 @test "raw listing" {
   run todo foo
   run sleep 1
