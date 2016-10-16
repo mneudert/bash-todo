@@ -26,6 +26,9 @@ todo list
 # implicitly recursive below current working directory
 tood list --orphaned
 
+# lists orphaned todo filenames (not contents)
+tood list --orphaned --raw
+
 # lists todo filenames (not contents)
 todo list --raw
 

@@ -57,6 +57,7 @@ display_help() {
   echo '   swap [0-9]* [0-9]*   Swaps contents of todo entries'
   echo ''
   echo 'To recursively list only filenames you can use "list --recursive --raw"'
+  echo 'To recursively list only orphaned filenames you can use "list --orphaned --raw"'
 }
 
 #######################################
@@ -139,14 +140,25 @@ case "${1}${2}" in
       [ -d "${todo_dir}" ] && continue
 
       if [[ "${todo_dir}" != "${cur_dir}" ]]; then
-        [ ! -z "${cur_dir}" ] && echo ""
+        if [ -z "${3}" ]; then
+          [ ! -z "${cur_dir}" ] && echo ""
 
-        echo "${todo_dir}:"
+          echo "${todo_dir}:"
+        fi
+
         cur_dir=${todo_dir}
       fi
 
-      echo -n "  orphaned | $(date -d "@$( basename "${todo}" )" +"${TODO_DATE}"): "
-      cat "${todo}"
+      case "${3}" in
+        "--raw")
+          echo "${todo}"
+          ;;
+
+        "")
+          echo -n "  orphaned | $(date -d "@$( basename "${todo}" )" +"${TODO_DATE}"): "
+          cat "${todo}"
+        ;;
+      esac
     done
     ;;
 

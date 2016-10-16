@@ -33,6 +33,23 @@ teardown() {
 }
 
 
+@test "orphaned listing (raw)" {
+  orphan_dir="test-raw-orphaned-listing"
+  orphan_todo="should not be printed"
+
+  mkdir "${orphan_dir}"
+  cd "${orphan_dir}"
+  todo "${orphan_todo}"
+  cd ..
+  rm -rf "${orphan_dir}"
+
+  run todo list --orphaned --raw
+
+  [ "${status}" -eq 0 ]
+  [ "${#lines[@]}" = "1" ]
+}
+
+
 @test "raw listing" {
   run todo foo
   run sleep 1
