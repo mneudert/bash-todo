@@ -45,16 +45,17 @@ display_help() {
   echo 'All commands are using the current working directory.'
   echo ''
   echo 'Commands:'
-  echo '   clear                Clears all todos'
-  echo '   clear --recursive    Clears all todos recursively'
-  echo '   count                Returns count of todos'
-  echo '   list                 Prints all todos'
-  echo '   list --orphaned      Recursively prints orphaned todos'
-  echo '   list --raw           Lists all todos in raw format (filename only)'
-  echo '   list --recursive     Prints all todos recursively'
-  echo '   modify [0-9]*        Modifies a todo with a replacement message'
-  echo '   rm [0-9]*            Deletes a single todo (with index displayed in list)'
-  echo '   swap [0-9]* [0-9]*   Swaps contents of todo entries'
+  echo '   backup --export outfile   Backup local todos into "file" (.tar.gz compressed)'
+  echo '   clear                     Clears all todos'
+  echo '   clear --recursive         Clears all todos recursively'
+  echo '   count                     Returns count of todos'
+  echo '   list                      Prints all todos'
+  echo '   list --orphaned           Recursively prints orphaned todos'
+  echo '   list --raw                Lists all todos in raw format (filename only)'
+  echo '   list --recursive          Prints all todos recursively'
+  echo '   modify [0-9]*             Modifies a todo with a replacement message'
+  echo '   rm [0-9]*                 Deletes a single todo (with index displayed in list)'
+  echo '   swap [0-9]* [0-9]*        Swaps contents of todo entries'
   echo ''
   echo 'To recursively list only filenames you can use "list --recursive --raw"'
   echo 'To recursively list only orphaned filenames you can use "list --orphaned --raw"'
@@ -91,6 +92,13 @@ determine_action "$@"
 execute_action
 
 case "${1}${2}" in
+  backup--export)
+    basedir_exists || { exit 0; }
+    [ ! -z "${3}" ] || { exit 0; }
+
+    tar -czf "$(pwd)/${3}" -C "${TODO_ROOT}" .
+    ;;
+
   clear)
     basedir_exists || { exit 0; }
     find_todos 1 | xargs -0 rm

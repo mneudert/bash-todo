@@ -10,6 +10,9 @@ _No bull, just todo notes_
 todo
 todo help
 
+# backup todos into (.tar.gz compressed) outfile
+todo backup --export /path/to/outfile
+
 # clear todos
 todo clear
 
