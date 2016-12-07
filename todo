@@ -84,10 +84,26 @@ find_todos() {
   fi
 }
 
+#######################################
+# Verifies the environment is properly set up.
+#######################################
+verify_env() {
+  [ ! -d "${TODO_ROOT}" ] && {
+    mkdir -p "${TODO_ROOT}" > /dev/null 2>&1 || {
+      rc=$?
+
+      echo "Failed to prepare todo root!"
+      echo "Configured location: ${TODO_ROOT}"
+      exit $rc
+    }
+  }
+}
 
 #######################################
 # Application
 #######################################
+verify_env
+
 determine_action "$@"
 execute_action
 
