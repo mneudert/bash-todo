@@ -20,6 +20,15 @@ basedir_exists() {
 }
 
 #######################################
+# Counts todos in the current directory.
+#######################################
+count_todos() {
+  basedir_exists || { echo 0; exit 0; }
+
+  echo $(find_todos 1 | tr "\0" "\n" | wc -l)
+}
+
+#######################################
 # Determins which action to run.
 #
 # Arguments:
@@ -33,6 +42,12 @@ determine_action() {
 
   [[ 'help' == "${1}" && '' == "${2}" ]] && {
     action='help'
+    return
+  }
+
+  [[ 'count' == "${1}" && '' == "${2}" ]] && {
+    action='count'
+    return
   }
 }
 
@@ -66,7 +81,8 @@ display_help() {
 #######################################
 execute_action() {
   case "${action}" in
-    help) display_help; exit 0;;
+    count) count_todos; exit 0;;
+    help)  display_help; exit 0;;
   esac
 }
 
@@ -123,11 +139,6 @@ case "${1}${2}" in
   clear--recursive)
     basedir_exists || { exit 0; }
     find_todos | xargs -0 rm
-    ;;
-
-  count)
-    basedir_exists || { echo 0; exit 0; }
-    find_todos 1 | tr "\0" "\n" | wc -l
     ;;
 
   list)
