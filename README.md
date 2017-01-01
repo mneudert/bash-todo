@@ -80,6 +80,12 @@ getting the number of todos. Otherwise the return code displayed would be the
 one from the `todo count` call.
 
 
+## Completions
+
+Available completion scripts are in the `completions` directory. Simple copy
+or link the script matching your shell.
+
+
 ## License
 
 [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0)
