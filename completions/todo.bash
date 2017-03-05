@@ -4,6 +4,7 @@ _todo()
 {
   COMPREPLY=()
 
+  local cmd=${COMP_WORDS[1]}
   local cur=${COMP_WORDS[COMP_CWORD]}
   local prev=${COMP_WORDS[COMP_CWORD-1]}
 
@@ -14,6 +15,13 @@ _todo()
     COMPREPLY=($(compgen -W "${commands}" -- ${cur}))
     return 0
   fi
+
+  # Complete command flags
+  case "${cmd}" in
+    backup) COMPREPLY=($(compgen -W '--export' -- ${cur}));;
+    clear)  COMPREPLY=($(compgen -W '--recursive' -- ${cur}));;
+    list)   COMPREPLY=($(compgen -W '--orphaned --raw --recursive' -- ${cur}));;
+  esac
 }
 
 complete -F _todo todo
