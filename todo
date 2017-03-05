@@ -64,6 +64,7 @@ display_help() {
   echo '   clear                     Clears all todos'
   echo '   clear --recursive         Clears all todos recursively'
   echo '   count                     Returns count of todos'
+  echo '   help                      Prints this help'
   echo '   list                      Prints all todos'
   echo '   list --orphaned           Recursively prints orphaned todos'
   echo '   list --raw                Lists all todos in raw format (filename only)'
