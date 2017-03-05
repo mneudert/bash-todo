@@ -7,7 +7,7 @@ _todo()
   local cur=${COMP_WORDS[COMP_CWORD]}
   local prev=${COMP_WORDS[COMP_CWORD-1]}
 
-  local commands='backup clear count list modify rm swap'
+  local commands='backup clear count help list modify rm swap'
 
   # Complete on the first term (command)
   if [ $COMP_CWORD -eq 1 ]; then
