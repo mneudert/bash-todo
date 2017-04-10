@@ -25,7 +25,9 @@ basedir_exists() {
 count_todos() {
   basedir_exists || { echo 0; exit 0; }
 
-  echo $(find_todos 1 | tr "\0" "\n" | wc -l)
+  find_todos 1 \
+      | tr "\0" "\n" \
+      | wc -l
 }
 
 #######################################
@@ -109,7 +111,7 @@ verify_env() {
     mkdir -p "${TODO_ROOT}" > /dev/null 2>&1 || {
       rc=$?
 
-      echo "Failed to prepare todo root!"
+      echo 'Failed to prepare todo root!'
       echo "Configured location: ${TODO_ROOT}"
       exit $rc
     }
@@ -177,7 +179,7 @@ case "${1}${2}" in
 
       if [[ "${todo_dir}" != "${cur_dir}" ]]; then
         if [ -z "${3}" ]; then
-          [ ! -z "${cur_dir}" ] && echo ""
+          [ ! -z "${cur_dir}" ] && echo ''
 
           echo "${todo_dir}:"
         fi
@@ -222,7 +224,7 @@ case "${1}${2}" in
           todo_dir=$( dirname "${todo#$TODO_ROOT}" )
 
           if [[ "${todo_dir}" != "${cur_dir}" ]]; then
-            [ ! -z "${cur_dir}" ] && echo ""
+            [ ! -z "${cur_dir}" ] && echo ''
 
             echo "${todo_dir}:"
             cur_dir=${todo_dir}
