@@ -131,7 +131,11 @@ case "${1}${2}" in
     basedir_exists || { exit 0; }
     [ ! -z "${3}" ] || { exit 0; }
 
-    tar -czf "$(pwd)/${3}" -C "${TODO_ROOT}" .
+    if [ "${3}" != "${3#/}" ]; then
+      tar -czf "${3}" -C "${TODO_ROOT}" .
+    else
+      tar -czf "$(pwd)/${3}" -C "${TODO_ROOT}" .
+    fi
     ;;
 
   clear)

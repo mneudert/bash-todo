@@ -16,7 +16,7 @@ teardown() {
 }
 
 
-@test "backup --export" {
+@test "backup --export ../relative" {
   run todo foo
 
   mkdir subdir
@@ -27,6 +27,27 @@ teardown() {
   cd ..
 
   run todo backup --export "test_export.tar.gz"
+
+  [ "${status}" -eq 0 ]
+  [ -f "test_export.tar.gz" ]
+
+  raw=$(basename "$(todo list --raw | head -1)")
+  contents=$(tar -tvf "test_export.tar.gz")
+
+  [[ "${contents}" == *"${raw}"* ]]
+}
+
+@test "backup --export /absolute" {
+  run todo foo
+
+  mkdir subdir
+  cd subdir
+
+  run todo bar
+
+  cd ..
+
+  run todo backup --export "$(pwd)/test_export.tar.gz"
 
   [ "${status}" -eq 0 ]
   [ -f "test_export.tar.gz" ]
