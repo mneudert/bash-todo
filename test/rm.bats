@@ -3,8 +3,8 @@
 export PATH="$(dirname "${BATS_TEST_DIRNAME}"):${PATH}"
 
 setup() {
-  export TODO_ROOT=$(mktemp --directory --tmpdir bash-todo_XXXXXXXX)
-  export TODO_BASE=$(mktemp --directory --tmpdir bash-todo_XXXXXXXX)
+  export TODO_ROOT=$(mktemp -d -t bash-todo_XXXXXXXX)
+  export TODO_BASE=$(mktemp -d -t bash-todo_XXXXXXXX)
 
   cd $TODO_BASE
 }
