@@ -1,11 +1,30 @@
-before_install:
-  - mkdir -p "${HOME}/bin"
-  - export PATH="${HOME}/bin:${TRAVIS_BUILD_DIR}:${PATH}"
+os:
+  - linux
+  - osx
 
-  - wget 'https://github.com/sstephenson/bats/archive/v0.4.0.tar.gz' -O bats.tar.gz && tar -xf bats.tar.gz
-  - find . -maxdepth 1 -type d -name 'bats*' -exec mv {} bats \;
-  - cd bats
-  - ./install.sh "${HOME}"
-  - cd "${TRAVIS_BUILD_DIR}"
+matrix:
+  allow_failures:
+    - os: osx
+
+before_install: |-
+  case "${TRAVIS_OS_NAME}" in
+    linux)
+      mkdir -p "${HOME}/bin"
+      export PATH="${HOME}/bin:${TRAVIS_BUILD_DIR}:${PATH}"
+
+      wget 'https://github.com/sstephenson/bats/archive/v0.4.0.tar.gz' -O bats.tar.gz && tar -xf bats.tar.gz
+      find . -maxdepth 1 -type d -name 'bats*' -exec mv {} bats \;
+
+      pushd ./bats
+        ./install.sh "${HOME}"
+      popd
+      ;;
+
+    osx)
+      brew update
+      brew install bash
+      brew install bats
+      ;;
+  esac
 
 script: bats --tap ./test/
