@@ -3,6 +3,7 @@
 ## Set up global variables
 TODO_DATE="${TODO_DATE:-%F %T}"
 TODO_ROOT="${TODO_ROOT:-$HOME/.todo}"
+UNAME="$(uname)"
 
 basedir="${TODO_ROOT}$(pwd)"
 
@@ -163,7 +164,13 @@ case "${1}${2}" in
       n=$((1 + i))
 
       echo -n "${pad_str:0:$((pad_len - ${#n}))}${n} | "
-      echo -n "$(date -d "@$( basename "${todos[$i]}" )" +"${TODO_DATE}"): "
+
+      if [[ "Darwin" == "${UNAME}" ]]; then
+        echo -n "$(date -jr "$( basename "${todos[i]}" )" +"${TODO_DATE}"): "
+      else
+        echo -n "$(date -d "@$( basename "${todos[i]}" )" +"${TODO_DATE}"): "
+      fi
+
       cat "${todos[$i]}"
     done
     ;;
@@ -198,7 +205,12 @@ case "${1}${2}" in
           ;;
 
         "")
-          echo -n "  orphaned | $(date -d "@$( basename "${todo}" )" +"${TODO_DATE}"): "
+          if [[ "Darwin" == "${UNAME}" ]]; then
+            echo -n "  orphaned | $(date -jr "$( basename "${todo}" )" +"${TODO_DATE}"): "
+          else
+            echo -n "  orphaned | $(date -d "@$( basename "${todo}" )" +"${TODO_DATE}"): "
+          fi
+
           cat "${todo}"
         ;;
       esac
@@ -235,7 +247,12 @@ case "${1}${2}" in
             cur_dir=${todo_dir}
           fi
 
-          echo -n "  $(date -d "@$( basename "${todo}" )" +"${TODO_DATE}"): "
+          if [[ "Darwin" == "${UNAME}" ]]; then
+            echo -n "  $(date -jr "$( basename "${todo}" )" +"${TODO_DATE}"): "
+          else
+            echo -n "  $(date -d "@$( basename "${todo}" )" +"${TODO_DATE}"): "
+          fi
+
           cat "${todo}"
         done
         ;;
