@@ -33,6 +33,20 @@ count_todos() {
 }
 
 #######################################
+# Consistently formats a date.
+#
+# Arguments:
+#   $1  Timestamp to format
+#######################################
+datefmt() {
+  if [[ "Darwin" == "${UNAME}" ]]; then
+    date -jr "${1}" +"${TODO_DATE}"
+  else
+    date -d "@${1}" +"${TODO_DATE}"
+  fi
+}
+
+#######################################
 # Determins which action to run.
 #
 # Arguments:
@@ -164,12 +178,7 @@ case "${1}${2}" in
       n=$((1 + i))
 
       echo -n "${pad_str:0:$((pad_len - ${#n}))}${n} | "
-
-      if [[ "Darwin" == "${UNAME}" ]]; then
-        echo -n "$(date -jr "$( basename "${todos[i]}" )" +"${TODO_DATE}"): "
-      else
-        echo -n "$(date -d "@$( basename "${todos[i]}" )" +"${TODO_DATE}"): "
-      fi
+      echo -n "$(datefmt "$(basename "${todos[i]}")"): "
 
       cat "${todos[$i]}"
     done
@@ -205,11 +214,7 @@ case "${1}${2}" in
           ;;
 
         "")
-          if [[ "Darwin" == "${UNAME}" ]]; then
-            echo -n "  orphaned | $(date -jr "$( basename "${todo}" )" +"${TODO_DATE}"): "
-          else
-            echo -n "  orphaned | $(date -d "@$( basename "${todo}" )" +"${TODO_DATE}"): "
-          fi
+          echo -n "  orphaned | $(datefmt "$(basename "${todo}")"): "
 
           cat "${todo}"
         ;;
@@ -247,11 +252,7 @@ case "${1}${2}" in
             cur_dir=${todo_dir}
           fi
 
-          if [[ "Darwin" == "${UNAME}" ]]; then
-            echo -n "  $(date -jr "$( basename "${todo}" )" +"${TODO_DATE}"): "
-          else
-            echo -n "  $(date -d "@$( basename "${todo}" )" +"${TODO_DATE}"): "
-          fi
+          echo -n "  $(datefmt "$(basename "${todo}")"): "
 
           cat "${todo}"
         done
