@@ -27,10 +27,10 @@ todo list
 
 # lists orphaned todos (respective directory missing)
 # implicitly recursive below current working directory
-tood list --orphaned
+todo list --orphaned
 
 # lists orphaned todo filenames (not contents)
-tood list --orphaned --raw
+todo list --orphaned --raw
 
 # lists todo filenames (not contents)
 todo list --raw

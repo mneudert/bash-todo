@@ -47,7 +47,7 @@ datefmt() {
 }
 
 #######################################
-# Determins which action to run.
+# Determines which action to run.
 #
 # Arguments:
 #  $@  Arguments as given to the script
