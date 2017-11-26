@@ -9,7 +9,6 @@ basedir="${TODO_ROOT}$(pwd)"
 
 action=''
 
-
 #######################################
 # Checks if the configures basedir exists.
 #
@@ -39,7 +38,7 @@ count_todos() {
 #   $1  Timestamp to format
 #######################################
 datefmt() {
-  if [[ "Darwin" == "${UNAME}" ]]; then
+  if [[ 'Darwin' == "${UNAME}" ]]; then
     date -jr "${1}" +"${TODO_DATE}"
   else
     date -d "@${1}" +"${TODO_DATE}"
@@ -50,7 +49,7 @@ datefmt() {
 # Determines which action to run.
 #
 # Arguments:
-#  $@  Arguments as given to the script
+#   $@  Arguments as given to the script
 #######################################
 determine_action() {
   [[ '' == "${1}" ]] && {
@@ -108,8 +107,11 @@ execute_action() {
 #######################################
 # Returns the todos for the current working directory.
 #
+# Arguments:
+#   $1  Maximum depth to traverse
+#
 # Returns:
-#     Array
+#   Array
 #######################################
 find_todos() {
   if [ -z "${1}" ]; then
@@ -172,7 +174,7 @@ case "${1}${2}" in
     done < <( find_todos 1 )
 
     pad_len="${#todo_num}"
-    pad_str="            "
+    pad_str='            '
 
     for i in "${!todos[@]}"; do
       n=$((1 + i))
@@ -187,7 +189,7 @@ case "${1}${2}" in
   list--orphaned)
     basedir_exists || { exit 0; }
 
-    cur_dir=""
+    cur_dir=''
 
     while IFS= read -r -d '' todo; do
       todos[todo_num++]="${todo}"
@@ -209,11 +211,11 @@ case "${1}${2}" in
       fi
 
       case "${3}" in
-        "--raw")
+        '--raw')
           echo "${todo}"
           ;;
 
-        "")
+        '')
           echo -n "  orphaned | $(datefmt "$(basename "${todo}")"): "
 
           cat "${todo}"
@@ -231,12 +233,12 @@ case "${1}${2}" in
     basedir_exists || { exit 0; }
 
     case "${3}" in
-      "--raw")
+      '--raw')
         find_todos | tr "\0" "\n"
         ;;
 
-      "")
-        cur_dir=""
+      '')
+        cur_dir=''
 
         while IFS= read -r -d '' todo; do
           todos[todo_num++]="${todo}"
