@@ -146,7 +146,6 @@ execute_action
 
 case "${1}${2}" in
   backup--export)
-    basedir_exists || { exit 0; }
     [ ! -z "${3}" ] || { exit 0; }
 
     if [ "${3}" != "${3#/}" ]; then
