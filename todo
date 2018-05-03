@@ -26,7 +26,7 @@ count_todos() {
   basedir_exists || { echo 0; exit 0; }
 
   find_todos 1 \
-      | tr "\0" "\n" \
+      | tr "\\0" "\\n" \
       | wc -l \
       | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'
 }
@@ -225,7 +225,7 @@ case "${1}${2}" in
 
   list--raw)
     basedir_exists || { exit 0; }
-    find_todos 1 | tr "\0" "\n"
+    find_todos 1 | tr "\\0" "\\n"
     ;;
 
   list--recursive)
@@ -233,7 +233,7 @@ case "${1}${2}" in
 
     case "${3}" in
       '--raw')
-        find_todos | tr "\0" "\n"
+        find_todos | tr "\\0" "\\n"
         ;;
 
       '')
