@@ -2,7 +2,6 @@
 
 _No bull, just todo notes_
 
-
 ## Usage
 
 ```shell
@@ -54,7 +53,6 @@ todo modify 4 this is the new message for todo 4
 todo swap 5 2
 ```
 
-
 ## Shell Prompt Integration
 
 ### ZSH
@@ -74,17 +72,11 @@ precmd() {
 PROMPT='[%n@%m:%c]${PR_TODOS}%# '
 ```
 
-__Note:__ If you are displaying the return code of the last executed command
-in your prompt (like 'PR_STAT="$?"') be sure to grab that code __before__
-getting the number of todos. Otherwise the return code displayed would be the
-one from the `todo count` call.
-
+__Note:__ If you are displaying the return code of the last executed command in your prompt (like 'PR_STAT="$?"') be sure to grab that code __before__ getting the number of todos. Otherwise the return code displayed would be the one from the `todo count` call.
 
 ## Completions
 
-Available completion scripts are in the `completions` directory. Simple copy
-or link the script matching your shell.
-
+Available completion scripts are in the `completions` directory. Simple copy or link the script matching your shell.
 
 ## License
 
