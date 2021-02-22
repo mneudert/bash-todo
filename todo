@@ -146,7 +146,7 @@ execute_action
 
 case "${1}${2}" in
   backup--export)
-    [ ! -z "${3}" ] || { exit 0; }
+    [ -n "${3}" ] || { exit 0; }
 
     if [ "${3}" != "${3#/}" ]; then
       tar -czf "${3}" -C "${TODO_ROOT}" .
@@ -201,7 +201,7 @@ case "${1}${2}" in
 
       if [[ "${todo_dir}" != "${cur_dir}" ]]; then
         if [ -z "${3}" ]; then
-          [ ! -z "${cur_dir}" ] && echo ''
+          [ -n "${cur_dir}" ] && echo ''
 
           echo "${todo_dir}:"
         fi
@@ -247,7 +247,7 @@ case "${1}${2}" in
           todo_dir=$( dirname "${todo#$TODO_ROOT}" )
 
           if [[ "${todo_dir}" != "${cur_dir}" ]]; then
-            [ ! -z "${cur_dir}" ] && echo ''
+            [ -n "${cur_dir}" ] && echo ''
 
             echo "${todo_dir}:"
             cur_dir=${todo_dir}
