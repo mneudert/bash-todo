@@ -21,13 +21,12 @@ teardown() {
 
 
 @test "backup --export ../relative" {
-  run todo foo
-
+  todo foo
   mkdir subdir
 
   (
     cd subdir
-    run todo bar
+    todo bar
   )
 
   run todo backup --export "test_export.tar.gz"
@@ -42,8 +41,7 @@ teardown() {
 }
 
 @test "backup --export /absolute" {
-  run todo foo
-
+  todo foo
   mkdir subdir
 
   (

@@ -21,18 +21,18 @@ teardown() {
 
 
 @test "removal of a single todo" {
-  run todo first
-  run sleep 1
-  run todo second
-  run sleep 1
-  run todo third
+  todo first
+  sleep 1
+  todo second
+  sleep 1
+  todo third
 
   run todo list
 
   [ "$status" -eq 0 ]
   [ "${#lines[@]}" = "3" ]
 
-  run todo rm 2
+  todo rm 2
   run todo list
 
   [ "$status" -eq 0 ]

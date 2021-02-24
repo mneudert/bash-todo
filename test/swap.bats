@@ -21,11 +21,11 @@ teardown() {
 
 
 @test "swapping of existing todo" {
-  run todo first
-  run sleep 1
-  run todo second
-  run sleep 1
-  run todo third
+  todo first
+  sleep 1
+  todo second
+  sleep 1
+  todo third
 
   run todo list
 
@@ -34,7 +34,7 @@ teardown() {
   [[ "${lines[1]}" == *"second" ]]
   [[ "${lines[2]}" == *"third" ]]
 
-  run todo swap 2 3
+  todo swap 2 3
   run todo list
 
   [ "$status" -eq 0 ]

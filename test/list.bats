@@ -62,9 +62,10 @@ teardown() {
 
 
 @test "raw listing" {
-  run todo foo
-  run sleep 1
-  run todo bar
+  todo foo
+  sleep 1
+  todo bar
+
   run todo list --raw
 
   [ "${status}" -eq 0 ]
@@ -74,13 +75,12 @@ teardown() {
 
 
 @test "recursive listing" {
-  run todo foo
-
+  todo foo
   mkdir subtest
 
   (
     cd subtest
-    run todo bar
+    todo bar
   )
 
   run todo list --recursive
@@ -92,13 +92,12 @@ teardown() {
 
 
 @test "recursive listing (raw)" {
-  run todo foo
-
+  todo foo
   mkdir subtest
 
   (
     cd subtest
-    run todo bar
+    todo bar
   )
 
   run todo list --recursive --raw

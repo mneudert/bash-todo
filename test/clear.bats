@@ -21,16 +21,16 @@ teardown() {
 
 
 @test "clearing" {
-  run todo foo
-  run sleep 1
-  run todo bar
+  todo foo
+  sleep 1
+  todo bar
 
   run todo count
 
   [ "${status}" -eq 0 ]
   [ "${lines[0]}" = "2" ]
 
-  run todo clear
+  todo clear
   run todo count
 
   [ "${status}" -eq 0 ]
@@ -38,13 +38,12 @@ teardown() {
 }
 
 @test "recursive clearing" {
-  run todo foo
-
+  todo foo
   mkdir subtest
 
   (
     cd subtest
-    run todo bar
+    todo bar
   )
 
   run todo list --recursive --raw
@@ -52,7 +51,7 @@ teardown() {
   [ "${status}" -eq 0 ]
   [ "${#lines[@]}" = "2" ]
 
-  run todo clear --recursive
+  todo clear --recursive
   run todo list --recursive --raw
 
   [ "${status}" -eq 0 ]

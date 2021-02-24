@@ -21,11 +21,11 @@ teardown() {
 
 
 @test "modification of existing todo" {
-  run todo first
-  run sleep 1
-  run todo second
-  run sleep 1
-  run todo third
+  todo first
+  sleep 1
+  todo second
+  sleep 1
+  todo third
 
   run todo list
 
@@ -33,7 +33,7 @@ teardown() {
   [ "${#lines[@]}" = "3" ]
   [[ "${lines[1]}" == *"second" ]]
 
-  run todo modify 2 dnoces
+  todo modify 2 dnoces
   run todo list
 
   [ "$status" -eq 0 ]
