@@ -1,6 +1,8 @@
 #!/usr/bin/env bats
 
-export PATH="$(dirname "${BATS_TEST_DIRNAME}"):${PATH}"
+PATH=$(dirname "${BATS_TEST_DIRNAME}"):${PATH}
+
+export PATH
 
 
 @test "no parameters displays help" {

@@ -1,9 +1,13 @@
 #!/usr/bin/env bats
 
-export PATH="$(dirname "${BATS_TEST_DIRNAME}"):${PATH}"
+PATH=$(dirname "${BATS_TEST_DIRNAME}"):${PATH}
+
+export PATH
 
 @test "exits if TODO_ROOT cannot be created" {
-  export TODO_ROOT="/root/.todo-test-error"
+  TODO_ROOT='/root/.todo-test-error'
+
+  export TODO_ROOT
 
   run todo
 

@@ -1,12 +1,17 @@
 #!/usr/bin/env bats
 
-export PATH="$(dirname "${BATS_TEST_DIRNAME}"):${PATH}"
+PATH=$(dirname "${BATS_TEST_DIRNAME}"):${PATH}
+
+export PATH
 
 setup() {
-  export TODO_ROOT=$(mktemp -d -t bash-todo_XXXXXXXX)
-  export TODO_BASE=$(mktemp -d -t bash-todo_XXXXXXXX)
+  TODO_ROOT=$(mktemp -d -t bash-todo_XXXXXXXX)
+  TODO_BASE=$(mktemp -d -t bash-todo_XXXXXXXX)
 
-  cd $TODO_BASE
+  cd "${TODO_BASE}" || exit
+
+  export TODO_ROOT
+  export TODO_BASE
 }
 
 teardown() {

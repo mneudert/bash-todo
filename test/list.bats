@@ -1,12 +1,17 @@
 #!/usr/bin/env bats
 
-export PATH="$(dirname "${BATS_TEST_DIRNAME}"):${PATH}"
+PATH=$(dirname "${BATS_TEST_DIRNAME}"):${PATH}
+
+export PATH
 
 setup() {
-  export TODO_ROOT=$(mktemp -d -t bash-todo_XXXXXXXX)
-  export TODO_BASE=$(mktemp -d -t bash-todo_XXXXXXXX)
+  TODO_ROOT=$(mktemp -d -t bash-todo_XXXXXXXX)
+  TODO_BASE=$(mktemp -d -t bash-todo_XXXXXXXX)
 
-  cd $TODO_BASE
+  cd "${TODO_BASE}" || exit
+
+  export TODO_ROOT
+  export TODO_BASE
 }
 
 teardown() {
@@ -20,9 +25,12 @@ teardown() {
   orphan_todo="should be listed"
 
   mkdir "${orphan_dir}"
-  cd "${orphan_dir}"
-  todo "${orphan_todo}"
-  cd ..
+
+  (
+    cd "${orphan_dir}"
+    todo "${orphan_todo}"
+  )
+
   rm -rf "${orphan_dir}"
 
   run todo list --orphaned
@@ -38,9 +46,12 @@ teardown() {
   orphan_todo="should not be printed"
 
   mkdir "${orphan_dir}"
-  cd "${orphan_dir}"
-  todo "${orphan_todo}"
-  cd ..
+
+  (
+    cd "${orphan_dir}"
+    todo "${orphan_todo}"
+  )
+
   rm -rf "${orphan_dir}"
 
   run todo list --orphaned --raw
@@ -66,11 +77,11 @@ teardown() {
   run todo foo
 
   mkdir subtest
-  cd subtest
 
-  run todo bar
-
-  cd ..
+  (
+    cd subtest
+    run todo bar
+  )
 
   run todo list --recursive
 
@@ -84,11 +95,11 @@ teardown() {
   run todo foo
 
   mkdir subtest
-  cd subtest
 
-  run todo bar
-
-  cd ..
+  (
+    cd subtest
+    run todo bar
+  )
 
   run todo list --recursive --raw
 
