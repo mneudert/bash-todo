@@ -10,9 +10,8 @@ setup() {
 }
 
 teardown() {
-  #rm -rf "${TODO_ROOT}"
-  #rm -rf "${TODO_BASE}"
-  true
+  rm -rf "${TODO_ROOT}"
+  rm -rf "${TODO_BASE}"
 }
 
 
