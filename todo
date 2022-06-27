@@ -195,7 +195,7 @@ case "${1}${2}" in
     done < <( find_todos )
 
     for todo in "${todos[@]}"; do
-      todo_dir=$( dirname "${todo#$TODO_ROOT}" )
+      todo_dir=$( dirname "${todo#"${TODO_ROOT}"}" )
 
       [ -d "${todo_dir}" ] && continue
 
@@ -244,7 +244,7 @@ case "${1}${2}" in
         done < <( find_todos )
 
         for todo in "${todos[@]}"; do
-          todo_dir=$( dirname "${todo#$TODO_ROOT}" )
+          todo_dir=$( dirname "${todo#"${TODO_ROOT}"}" )
 
           if [[ "${todo_dir}" != "${cur_dir}" ]]; then
             [ -n "${cur_dir}" ] && echo ''
