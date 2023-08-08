@@ -7,8 +7,8 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-    - uses: actions/checkout@v3
-    - uses: mig4/setup-bats@v1
+      - uses: actions/checkout@v3
+      - uses: mig4/setup-bats@v1
 
-    - name: test
-      run: bats --tap ./test/
+      - name: test
+        run: bats --tap ./test/
