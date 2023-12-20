@@ -1,4 +1,4 @@
-name: Code Quality
+name: CI
 
 on:
   pull_request:
@@ -27,3 +27,13 @@ jobs:
       - uses: ludeeus/action-shellcheck@2.0.0
         with:
           ignore_paths: completions test
+
+  test:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: mig4/setup-bats@v1
+
+      - name: test
+        run: bats --tap ./test/
