@@ -35,6 +35,9 @@ jobs:
         with:
           ignore_paths: completions test
 
+      - uses: mfinelli/setup-shfmt@v4
+      - run: shfmt -d todo
+
   test:
     runs-on: ubuntu-24.04
 
