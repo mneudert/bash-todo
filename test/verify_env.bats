@@ -5,12 +5,12 @@ PATH=$(dirname "${BATS_TEST_DIRNAME}"):${PATH}
 export PATH
 
 @test "exits if TODO_ROOT cannot be created" {
-  TODO_ROOT='/root/.todo-test-error'
+	TODO_ROOT='/root/.todo-test-error'
 
-  export TODO_ROOT
+	export TODO_ROOT
 
-  run todo
+	run todo
 
-  [ "$status" -eq 1 ]
-  [[ "${lines[1]}" == *"${TODO_ROOT}" ]]
+	[ "$status" -eq 1 ]
+	[[ ${lines[1]} == *"${TODO_ROOT}" ]]
 }

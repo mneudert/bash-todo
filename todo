@@ -16,19 +16,22 @@ action=''
 #   Boolean
 #######################################
 basedir_exists() {
-  [ -d "${basedir}" ]
+	[ -d "${basedir}" ]
 }
 
 #######################################
 # Counts todos in the current directory.
 #######################################
 count_todos() {
-  basedir_exists || { echo 0; exit 0; }
+	basedir_exists || {
+		echo 0
+		exit 0
+	}
 
-  find_todos 1 \
-      | tr "\\0" "\\n" \
-      | wc -l \
-      | sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'
+	find_todos 1 |
+		tr '\0' '\n' |
+		wc -l |
+		sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//'
 }
 
 #######################################
@@ -38,11 +41,11 @@ count_todos() {
 #   $1  Timestamp to format
 #######################################
 datefmt() {
-  if [[ 'Darwin' == "${UNAME}" ]]; then
-    date -jr "${1}" +"${TODO_DATE}"
-  else
-    date -d "@${1}" +"${TODO_DATE}"
-  fi
+	if [[ 'Darwin' == "${UNAME}" ]]; then
+		date -jr "${1}" +"${TODO_DATE}"
+	else
+		date -d "@${1}" +"${TODO_DATE}"
+	fi
 }
 
 #######################################
@@ -52,56 +55,62 @@ datefmt() {
 #   $@  Arguments as given to the script
 #######################################
 determine_action() {
-  [[ '' == "${1}" ]] && {
-    action='help'
-    return
-  }
+	[[ '' == "${1}" ]] && {
+		action='help'
+		return
+	}
 
-  [[ 'help' == "${1}" && '' == "${2}" ]] && {
-    action='help'
-    return
-  }
+	[[ 'help' == "${1}" && '' == "${2}" ]] && {
+		action='help'
+		return
+	}
 
-  [[ 'count' == "${1}" && '' == "${2}" ]] && {
-    action='count'
-    return
-  }
+	[[ 'count' == "${1}" && '' == "${2}" ]] && {
+		action='count'
+		return
+	}
 }
 
 #######################################
 # Displays application help/usage.
 #######################################
 display_help() {
-  echo 'Usage: todo <command>'
-  echo ''
-  echo 'All commands are using the current working directory.'
-  echo ''
-  echo 'Commands:'
-  echo '   backup --export outfile   Backup local todos into "file" (.tar.gz compressed)'
-  echo '   clear                     Clears all todos'
-  echo '   clear --recursive         Clears all todos recursively'
-  echo '   count                     Returns count of todos'
-  echo '   help                      Prints this help'
-  echo '   list                      Prints all todos'
-  echo '   list --orphaned           Recursively prints orphaned todos'
-  echo '   list --raw                Lists all todos in raw format (filename only)'
-  echo '   list --recursive          Prints all todos recursively'
-  echo '   modify [0-9]*             Modifies a todo with a replacement message'
-  echo '   rm [0-9]*                 Deletes a single todo (with index displayed in list)'
-  echo '   swap [0-9]* [0-9]*        Swaps contents of todo entries'
-  echo ''
-  echo 'To recursively list only filenames you can use "list --recursive --raw"'
-  echo 'To recursively list only orphaned filenames you can use "list --orphaned --raw"'
+	echo 'Usage: todo <command>'
+	echo ''
+	echo 'All commands are using the current working directory.'
+	echo ''
+	echo 'Commands:'
+	echo '   backup --export outfile   Backup local todos into "file" (.tar.gz compressed)'
+	echo '   clear                     Clears all todos'
+	echo '   clear --recursive         Clears all todos recursively'
+	echo '   count                     Returns count of todos'
+	echo '   help                      Prints this help'
+	echo '   list                      Prints all todos'
+	echo '   list --orphaned           Recursively prints orphaned todos'
+	echo '   list --raw                Lists all todos in raw format (filename only)'
+	echo '   list --recursive          Prints all todos recursively'
+	echo '   modify [0-9]*             Modifies a todo with a replacement message'
+	echo '   rm [0-9]*                 Deletes a single todo (with index displayed in list)'
+	echo '   swap [0-9]* [0-9]*        Swaps contents of todo entries'
+	echo ''
+	echo 'To recursively list only filenames you can use "list --recursive --raw"'
+	echo 'To recursively list only orphaned filenames you can use "list --orphaned --raw"'
 }
 
 #######################################
 # Executes the previously detected action.
 #######################################
 execute_action() {
-  case "${action}" in
-    count) count_todos; exit 0;;
-    help)  display_help; exit 0;;
-  esac
+	case "${action}" in
+	count)
+		count_todos
+		exit 0
+		;;
+	help)
+		display_help
+		exit 0
+		;;
+	esac
 }
 
 #######################################
@@ -114,26 +123,26 @@ execute_action() {
 #   Array
 #######################################
 find_todos() {
-  if [ -z "${1}" ]; then
-    find "${basedir}" -type f -print0 | sort -z -n
-  else
-    find "${basedir}" -maxdepth "${1}" -type f -print0 | sort -z -n
-  fi
+	if [ -z "${1}" ]; then
+		find "${basedir}" -type f -print0 | sort -z -n
+	else
+		find "${basedir}" -maxdepth "${1}" -type f -print0 | sort -z -n
+	fi
 }
 
 #######################################
 # Verifies the environment is properly set up.
 #######################################
 verify_env() {
-  [ ! -d "${TODO_ROOT}" ] && {
-    mkdir -p "${TODO_ROOT}" > /dev/null 2>&1 || {
-      rc=$?
+	[ ! -d "${TODO_ROOT}" ] && {
+		mkdir -p "${TODO_ROOT}" >/dev/null 2>&1 || {
+			rc=$?
 
-      echo 'Failed to prepare todo root!'
-      echo "Configured location: ${TODO_ROOT}"
-      exit $rc
-    }
-  }
+			echo 'Failed to prepare todo root!'
+			echo "Configured location: ${TODO_ROOT}"
+			exit $rc
+		}
+	}
 }
 
 #######################################
@@ -145,169 +154,169 @@ determine_action "$@"
 execute_action
 
 case "${1}${2}" in
-  backup--export)
-    [ -n "${3}" ] || { exit 0; }
+backup--export)
+	[ -n "${3}" ] || { exit 0; }
 
-    if [ "${3}" != "${3#/}" ]; then
-      tar -czf "${3}" -C "${TODO_ROOT}" .
-    else
-      tar -czf "$(pwd)/${3}" -C "${TODO_ROOT}" .
-    fi
-    ;;
+	if [ "${3}" != "${3#/}" ]; then
+		tar -czf "${3}" -C "${TODO_ROOT}" .
+	else
+		tar -czf "$(pwd)/${3}" -C "${TODO_ROOT}" .
+	fi
+	;;
 
-  clear)
-    basedir_exists || { exit 0; }
-    find_todos 1 | xargs -0 rm
-    ;;
+clear)
+	basedir_exists || { exit 0; }
+	find_todos 1 | xargs -0 rm
+	;;
 
-  clear--recursive)
-    basedir_exists || { exit 0; }
-    find_todos | xargs -0 rm
-    ;;
+clear--recursive)
+	basedir_exists || { exit 0; }
+	find_todos | xargs -0 rm
+	;;
 
-  list)
-    basedir_exists || { exit 0; }
+list)
+	basedir_exists || { exit 0; }
 
-    while IFS= read -r -d '' todo; do
-      todos[todo_num++]="${todo}"
-    done < <( find_todos 1 )
+	while IFS= read -r -d '' todo; do
+		todos[todo_num++]="${todo}"
+	done < <(find_todos 1)
 
-    pad_len="${#todo_num}"
-    pad_str='            '
+	pad_len="${#todo_num}"
+	pad_str='            '
 
-    for i in "${!todos[@]}"; do
-      n=$((1 + i))
+	for i in "${!todos[@]}"; do
+		n=$((1 + i))
 
-      echo -n "${pad_str:0:$((pad_len - ${#n}))}${n} | "
-      echo -n "$(datefmt "$(basename "${todos[i]}")"): "
+		echo -n "${pad_str:0:$((pad_len - ${#n}))}${n} | "
+		echo -n "$(datefmt "$(basename "${todos[i]}")"): "
 
-      cat "${todos[$i]}"
-    done
-    ;;
+		cat "${todos[$i]}"
+	done
+	;;
 
-  list--orphaned)
-    basedir_exists || { exit 0; }
+list--orphaned)
+	basedir_exists || { exit 0; }
 
-    cur_dir=''
+	cur_dir=''
 
-    while IFS= read -r -d '' todo; do
-      todos[todo_num++]="${todo}"
-    done < <( find_todos )
+	while IFS= read -r -d '' todo; do
+		todos[todo_num++]="${todo}"
+	done < <(find_todos)
 
-    for todo in "${todos[@]}"; do
-      todo_dir=$( dirname "${todo#"${TODO_ROOT}"}" )
+	for todo in "${todos[@]}"; do
+		todo_dir=$(dirname "${todo#"${TODO_ROOT}"}")
 
-      [ -d "${todo_dir}" ] && continue
+		[ -d "${todo_dir}" ] && continue
 
-      if [[ "${todo_dir}" != "${cur_dir}" ]]; then
-        if [ -z "${3}" ]; then
-          [ -n "${cur_dir}" ] && echo ''
+		if [[ ${todo_dir} != "${cur_dir}" ]]; then
+			if [ -z "${3}" ]; then
+				[ -n "${cur_dir}" ] && echo ''
 
-          echo "${todo_dir}:"
-        fi
+				echo "${todo_dir}:"
+			fi
 
-        cur_dir=${todo_dir}
-      fi
+			cur_dir=${todo_dir}
+		fi
 
-      case "${3}" in
-        '--raw')
-          echo "${todo}"
-          ;;
+		case "${3}" in
+		'--raw')
+			echo "${todo}"
+			;;
 
-        '')
-          echo -n "  orphaned | $(datefmt "$(basename "${todo}")"): "
+		'')
+			echo -n "  orphaned | $(datefmt "$(basename "${todo}")"): "
 
-          cat "${todo}"
-        ;;
-      esac
-    done
-    ;;
+			cat "${todo}"
+			;;
+		esac
+	done
+	;;
 
-  list--raw)
-    basedir_exists || { exit 0; }
-    find_todos 1 | tr "\\0" "\\n"
-    ;;
+list--raw)
+	basedir_exists || { exit 0; }
+	find_todos 1 | tr '\0' '\n'
+	;;
 
-  list--recursive)
-    basedir_exists || { exit 0; }
+list--recursive)
+	basedir_exists || { exit 0; }
 
-    case "${3}" in
-      '--raw')
-        find_todos | tr "\\0" "\\n"
-        ;;
+	case "${3}" in
+	'--raw')
+		find_todos | tr '\0' '\n'
+		;;
 
-      '')
-        cur_dir=''
+	'')
+		cur_dir=''
 
-        while IFS= read -r -d '' todo; do
-          todos[todo_num++]="${todo}"
-        done < <( find_todos )
+		while IFS= read -r -d '' todo; do
+			todos[todo_num++]="${todo}"
+		done < <(find_todos)
 
-        for todo in "${todos[@]}"; do
-          todo_dir=$( dirname "${todo#"${TODO_ROOT}"}" )
+		for todo in "${todos[@]}"; do
+			todo_dir=$(dirname "${todo#"${TODO_ROOT}"}")
 
-          if [[ "${todo_dir}" != "${cur_dir}" ]]; then
-            [ -n "${cur_dir}" ] && echo ''
+			if [[ ${todo_dir} != "${cur_dir}" ]]; then
+				[ -n "${cur_dir}" ] && echo ''
 
-            echo "${todo_dir}:"
-            cur_dir=${todo_dir}
-          fi
+				echo "${todo_dir}:"
+				cur_dir=${todo_dir}
+			fi
 
-          echo -n "  $(datefmt "$(basename "${todo}")"): "
+			echo -n "  $(datefmt "$(basename "${todo}")"): "
 
-          cat "${todo}"
-        done
-        ;;
-    esac
-    ;;
+			cat "${todo}"
+		done
+		;;
+	esac
+	;;
 
-  modify[0-9]*)
-    basedir_exists || { exit 0; }
+modify[0-9]*)
+	basedir_exists || { exit 0; }
 
-    while IFS= read -r -d '' todo; do
-      todos[todo_num++]="${todo}"
-    done < <( find_todos 1 )
+	while IFS= read -r -d '' todo; do
+		todos[todo_num++]="${todo}"
+	done < <(find_todos 1)
 
-    todo=${todos[$(($2 - 1))]}
+	todo=${todos[$(($2 - 1))]}
 
-    if [ -f "${todo}" ]; then
-      shift 2
-      echo "$@" > "${todo}"
-    fi
-    ;;
+	if [ -f "${todo}" ]; then
+		shift 2
+		echo "$@" >"${todo}"
+	fi
+	;;
 
-  rm[0-9]*)
-    basedir_exists || { exit 0; }
+rm[0-9]*)
+	basedir_exists || { exit 0; }
 
-    while IFS= read -r -d '' todo; do
-      todos[todo_num++]="${todo}"
-    done < <( find_todos 1 )
+	while IFS= read -r -d '' todo; do
+		todos[todo_num++]="${todo}"
+	done < <(find_todos 1)
 
-    todo=${todos[$(($2 - 1))]}
+	todo=${todos[$(($2 - 1))]}
 
-    [ -f "${todo}" ] && rm "${todo}"
-    ;;
+	[ -f "${todo}" ] && rm "${todo}"
+	;;
 
-  swap[0-9]*)
-    basedir_exists || { exit 0; }
+swap[0-9]*)
+	basedir_exists || { exit 0; }
 
-    while IFS= read -r -d '' todo; do
-      todos[todo_num++]="${todo}"
-    done < <( find_todos 1 )
+	while IFS= read -r -d '' todo; do
+		todos[todo_num++]="${todo}"
+	done < <(find_todos 1)
 
-    left=${todos[$(($2 - 1))]}
-    right=${todos[$(($3 - 1))]}
+	left=${todos[$(($2 - 1))]}
+	right=${todos[$(($3 - 1))]}
 
-    [ ! -f "${left}" ] && exit 1
-    [ ! -f "${right}" ] && exit 1
+	[ ! -f "${left}" ] && exit 1
+	[ ! -f "${right}" ] && exit 1
 
-    mv "${left}" "${left}.tmp"
-    mv "${right}" "${left}"
-    mv "${left}.tmp" "${right}"
-    ;;
+	mv "${left}" "${left}.tmp"
+	mv "${right}" "${left}"
+	mv "${left}.tmp" "${right}"
+	;;
 
-  *)
-    mkdir -p "${basedir}"
-    echo "$@" > "${basedir}/$(date +%s)"
-    ;;
+*)
+	mkdir -p "${basedir}"
+	echo "$@" >"${basedir}/$(date +%s)"
+	;;
 esac

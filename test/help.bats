@@ -4,17 +4,16 @@ PATH=$(dirname "${BATS_TEST_DIRNAME}"):${PATH}
 
 export PATH
 
-
 @test "no parameters displays help" {
-  run todo
+	run todo
 
-  [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "Usage: todo <command>" ]
+	[ "$status" -eq 0 ]
+	[ "${lines[0]}" = "Usage: todo <command>" ]
 }
 
 @test "help command displays help" {
-  run todo help
+	run todo help
 
-  [ "$status" -eq 0 ]
-  [ "${lines[0]}" = "Usage: todo <command>" ]
+	[ "$status" -eq 0 ]
+	[ "${lines[0]}" = "Usage: todo <command>" ]
 }
